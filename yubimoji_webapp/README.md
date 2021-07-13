@@ -1,0 +1,2 @@
+# yubimoji_webapp
+ここで指文字認識器を組み込んだWebアプリを開発
