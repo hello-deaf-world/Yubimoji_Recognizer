@@ -9,8 +9,8 @@ numpy = "*"
 matplotlib = "*"
 opencv-python = "*"
 mediapipe = "*"
-tensorflow = "*"
-keras = "*"
+#tensorflow = "*"
+#keras = "*"
 
 [dev-packages]
 
