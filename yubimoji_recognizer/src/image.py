@@ -37,7 +37,7 @@ def get_images(ROOT_PATH):
         #ディレクトリをpathListに追加
         for file in files:
             pathList.append(file)
-            
+
     return pathList
             
             
@@ -69,6 +69,6 @@ def check_dir(path):
     return os.path.isdir(path)
 
 #ディレクトリ作成実行
-#↓↓↓実行するときはコメント外す↓↓↓
+#↓↓↓実行するときはコメント外す↓↓
 # make_dir()
 
