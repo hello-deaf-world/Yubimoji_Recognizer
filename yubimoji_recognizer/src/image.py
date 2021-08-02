@@ -25,14 +25,34 @@ IMAGE_FILES = [
 ]
 
 def get_images(ROOT_PATH):
-    DIR_NAME = "{root}/images".format(
-        root = ROOT_PATH)
-    
-    # 上記ディレクトリにある画像ファイル群のファイル名リストを取得
-    return glob.glob("{path}/*".format(path = DIR_NAME))
+
+    pathList = []
+
+    DIR_NAME = "{root}".format(
+        root = ROOT_PATH, )
+
+    #上記ディレクトリにある画像ファイル群のファイル名リストを取得
+    for i in range(len(ja_list)):
+        files = glob.glob(ROOT_PATH + "images/" + str(i)+"."+ja_list[i]+"/*")
+        #ディレクトリをpathListに追加
+        for file in files:
+            pathList.append(file)
+            
+    return pathList
+            
+            
+
+            # test print -> succsess
+            # print(file)
+
+    # DIR_NAME = "{root}/images//0.a".format(
+    #     root = ROOT_PATH, )
+        
+    #     #上記ディレクトリにある画像ファイル群のファイル名リストを取得
+    # return glob.glob("{path}/*".format(path = DIR_NAME))
 
 # 動作確認用
-# get_images(PYPATH)
+# print(get_images(PYPATH))
 
 # ディレクトリを作成
 # ja_listから名前を取得
@@ -49,5 +69,6 @@ def check_dir(path):
     return os.path.isdir(path)
 
 #ディレクトリ作成実行
-make_dir()
+#↓↓↓実行するときはコメント外す↓↓↓
+# make_dir()
 
