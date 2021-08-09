@@ -1,5 +1,5 @@
 from Japanese_list import ja_list
-from image import make_dir
+# from image import make_dir
 import os
 
 
@@ -10,6 +10,5 @@ def make_dir():
     for i in range(len(ja_list)):
         path = 'images\\{path}'.format(path= str(i) + "." + ja_list[i])
         os.makedirs(path)
-
 
 make_dir()
