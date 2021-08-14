@@ -1,4 +1,4 @@
-from Japanese_list import ja_list
+from ja_dict import ja_dict
 # from image import make_dir
 import os
 
@@ -7,8 +7,12 @@ import os
 # ja_listから名前を取得
 # ja_listに追加するとその分追加ディレクトリを作成できる
 def make_dir():
-    for i in range(len(ja_list)):
-        path = 'images\\{path}'.format(path= str(i) + "." + ja_list[i])
+    count = 0
+    for name in ja_dict.values():
+        path = 'images\\{path}'.format(path= str(count) + "." + name)
+        
         os.makedirs(path)
+        count += 1
+        
 
 make_dir()
