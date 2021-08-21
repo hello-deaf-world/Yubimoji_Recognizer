@@ -7,6 +7,12 @@ PYPATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())
 #-----------------------------------------------------
 import glob
 
+# 50音それぞれのフォルダを作成する
+#---------------------------------------------
+
+#---------------------------------------------
+
+
 #読み込む写真のリスト
 #読み込んだらコメントアウトすること
 
@@ -19,11 +25,18 @@ IMAGE_FILES = [
 ]
 
 def get_images(ROOT_PATH):
-    DIR_NAME = "{root}/images".format(
-        root = ROOT_PATH)
     
-    # 上記ディレクトリにある画像ファイル群のファイル名リストを取得
-    return glob.glob("{path}/*".format(path = DIR_NAME))
+    DIR_NAME = "{root}".format(
+        root = ROOT_PATH)
+
+    #上記ディレクトリにある画像ファイル群のファイル名リストを取得(拡張子.png)
+    
+    images = glob.glob(ROOT_PATH + "images//*//*.png")
+    return images
+            
 
 # 動作確認用
-# get_images(PYPATH)
+print(get_images(PYPATH))
+
+
+

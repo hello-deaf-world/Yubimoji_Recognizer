@@ -10,58 +10,90 @@ import cv2
 import mediapipe as mp
 # from image import IMAGE_FILES
 from image import get_images
+# from input_csv_file import inputDate
+# from ja_dict import ja_dict
+from function import getRorL
 mp_drawing = mp.solutions.drawing_utils
 mp_hands = mp.solutions.hands
 
 # For static images:
 
 with mp_hands.Hands(
-    static_image_mode=True,
-    max_num_hands=2,
-    min_detection_confidence=0.5) as hands:
-  
-  # for i in range(len(files_name)):
-  #   print("files name:", files_name[i])  
-  
-  IMAGE_FILES = get_images(PYPATH)
-  for idx, file in enumerate(IMAGE_FILES):
-    
-    # Read an image, flip it around y-axis for correct handedness output (see
-    # above).
-    image = cv2.flip(cv2.imread(file), 1)
-    # Convert the BGR image to RGB before processing.
-    results = hands.process(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+		static_image_mode=True,
+		max_num_hands=2,
+		min_detection_confidence=0.5) as hands:
 
-    # Print handedness and draw hand landmarks on the image.
-    print('Handedness:', results.multi_handedness)
-    if not results.multi_hand_landmarks:
-      continue
-    image_height, image_width, _ = image.shape
-    annotated_image = image.copy()
-    for hand_landmarks in results.multi_hand_landmarks:
-      
-      print('hand_landmarks:', hand_landmarks)
-      print(
-          f'Index finger tip coordinates: (',
-          f'{hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP].x * image_width}, '
-          f'{hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP].y * image_height})'
-      )
-      # ここでランドマーク(骨格ぽいんた？)の，画像への描写してる
-      mp_drawing.draw_landmarks(
-          annotated_image, hand_landmarks, mp_hands.HAND_CONNECTIONS)
-    # ここで画像の保存してる？
-    # /tmpってWindowsでどこやねんｗ
-    # cv2.imwrite(
-    #     '/tmp/annotated_image' + str(idx) + '.png', cv2.flip(annotated_image, 1))
+	# for i in range(len(files_name)):
+	# 	  print("files name:", files_name[i])
 
-    # 画像の保存ではなく表示の方でためそう
-    ## => OKそう
-    while True:
-      cv2.imshow('MediaPipe Hands', annotated_image)
-      if cv2.waitKey(5) & 0xFF == 27:
-        # ここをやると一枚ずつ切り替わる
-        break
-      time.sleep(1)
+	IMAGE_FILES = get_images(PYPATH)
+	for idx, file in enumerate(IMAGE_FILES):
+
+		# Read an image, flip it around y-axis for correct handedness output (see
+		# above).
+		image = cv2.flip(cv2.imread(file), 1)
+		# Convert the BGR image to RGB before processing.
+		results = hands.process(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+
+		# code of the under is thing which execute function.py
+		# gotId = getId()
+		# gotToday = getToday()
+		# gotFilename
+		# gotRorL = getRorL(results.multi_handedness)
+		# got
+
+		# Print handedness and draw hand landmarks on the image.
+		# ハンドネスのプリント
+		# print('Handedness:', results.multi_handedness)
+		if not results.multi_hand_landmarks:
+			continue
+		image_height, image_width, _ = image.shape
+		annotated_image = image.copy()
+
+
+		for hand_landmarks in results.multi_hand_landmarks:
+
+			#　以下実行->ランドマークの数値がプリントされる
+			print(getRorL(results.multi_handedness))
+			print('filename:',file)
+			# print('Handedness:', results.multi_handedness)
+			# print('hand_landmarks:', hand_landmarks)
+			# print(
+			#     f'Index finger tip coordinates: (',
+			#     f'{hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP].x * image_width}, '
+			#     f'{hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP].y * image_height})'
+			# )
+			# ここでランドマーク(骨格ぽいんた？)の，画像への描写してる
+			#mp_drawing.draw_landmarks(
+			#  annotated_image, hand_landmarks, mp_hands.HAND_CONNECTIONS)
+
+		# ここで画像の保存してる？
+		# /tmpってWindowsでどこやねんｗ
+		# cv2.imwrite(
+		#     '/tmp/annotated_image' + str(idx) + '.png', cv2.flip(annotated_image, 1))
+
+		# hiragana = input("平仮名を入力してください:")
+		# romaji = ja_dict[hiragana]
+
+		# hand_label = results.multi_handedness
+
+		# fingerTip_x = "{x}".format(x = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP].x * image_width)
+		# fingerTip_y = "{y}".format(y = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP].y * image_height)
+
+		#数値データをCSVへ書き出し
+		# inputDate(hiragana, romaji, hand_label, results.multi_hand_landmarks)
+
+		# 画像の保存ではなく表示の方でためそう
+		## => OKそう
+		# while True:
+		#   cv2.imshow('MediaPipe Hands', annotated_image)
+		#   if cv2.waitKey(5) & 0xFF == 27:
+		#     # ここをやると一枚ずつ切り替わる
+		#     break
+		#   time.sleep(1)
+
+
+
 
 # # For webcam input:
 # cap = cv2.VideoCapture(1)   #REN...camera number 1 Yuri...0
