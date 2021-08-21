@@ -11,8 +11,8 @@ def make_dir():
     for name in ja_dict.values():
         path = 'images\\{path}'.format(path= str(count) + "_" + name)
         
-        os.makedirs(path)
+           
+        os.makedirs(path,exist_ok=True)
         count += 1
-        
 
 make_dir()
