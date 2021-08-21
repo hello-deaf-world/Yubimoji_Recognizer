@@ -17,7 +17,7 @@ def makeCSV(filename):
     hedder = ["Hiragana", "Romaji" , "hand_labels" , "hand_landmarks" ]
     
 
-    with open(filename, 'w') as f:
+    with open(filename, 'w', encoding = 'utf-8') as f:
         writer = csv.writer(f)
         writer.writerow(hedder)
 
