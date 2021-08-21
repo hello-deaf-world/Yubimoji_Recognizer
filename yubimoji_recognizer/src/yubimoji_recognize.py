@@ -46,7 +46,7 @@ with mp_hands.Hands(
 		# ハンドネスのプリント
 		# print('Handedness:', results.multi_handedness)
 		if not results.multi_hand_landmarks:
-    			continue
+			continue
 		image_height, image_width, _ = image.shape
 		annotated_image = image.copy()
 
