@@ -83,11 +83,10 @@ def changeName(images):
 # It can get a the execution's time
 def getDatetime():
 
-    dt_now = datetime.datetime.now()
-    getToday = "{year}{month}{day}".format(
-        year = dt_now.year, month = dt_now.month, day = dt_now.day,
-        hour = dt_now.hour, minute = dt_now.minute, second = dt_now.second)
-    return getToday
+    today = datetime.date.today()
+    yyyymmdd = today.strftime('%Y%m%d')
+
+    return yyyymmdd
 
 
 
