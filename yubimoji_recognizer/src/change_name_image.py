@@ -89,7 +89,6 @@ def get_current_yyyymmdd():
     return yyyymmdd
 
 
-
 main()
 
 
