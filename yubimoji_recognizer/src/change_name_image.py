@@ -2,6 +2,7 @@ from ja_dict import ja_dict
 from function_get_current import get_current_yyyymmdd
 import os
 import glob
+import shutil
 
 # To store new images need to rename to name of Hiragana and "NO.png"
 
@@ -19,7 +20,6 @@ def main():
             os.rename(before, after)
             # print("changed name : "+ str(os.path))
 
-
     else:
         print(beforeList)
         print(afterList)
@@ -27,11 +27,13 @@ def main():
             "Error: It is different the number of files in beforeList and afterList."
             )
 
+    filemove(afterList)
+
 
 # it can get the image all in the images file
 def getImages():
 
-    imagesList = glob.glob("images//*//*.png" )
+    imagesList = glob.glob("images//new_images//*.png" )
     return imagesList
 
 # it can change image's name to "a_(number)_(0= didn't recognize, 1= did recognize)_datatime.png"
@@ -80,9 +82,30 @@ def changeName(images):
 
     return  beforenameList, newnameList
 
+# it can move the image data to each label's folders
+def filemove(filepathList):
+
+
+    
+
+    for filepath in filepathList:
+        filename = os.path.basename(filepath)
+        file_idx = filename.find("_")
+
+        count = 0
+        for en in ja_dict.values():
+            if filename[:file_idx] == en:
+                movepath =  "images//{count}_{en}//".format(count=count, en=en) 
+                shutil.move(filepath,movepath)
+                print('move before:' ,filepath ," ", "move after", movepath)
+            else:
+                count += 1
+
+        
+
 
 
 main()
 
 
-
+     
