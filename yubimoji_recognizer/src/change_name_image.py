@@ -1,7 +1,7 @@
 from ja_dict import ja_dict
+from function_get_current import get_current_yyyymmdd
 import os
 import glob
-import datetime
 
 # To store new images need to rename to name of Hiragana and "NO.png"
 
@@ -80,13 +80,6 @@ def changeName(images):
 
     return  beforenameList, newnameList
 
-# It can get a the execution's time
-def get_current_yyyymmdd():
-
-    today = datetime.date.today()
-    yyyymmdd = today.strftime('%Y%m%d')
-
-    return yyyymmdd
 
 
 main()
