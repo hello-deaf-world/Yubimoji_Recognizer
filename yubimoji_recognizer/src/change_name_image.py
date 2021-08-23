@@ -67,7 +67,7 @@ def changeName(images):
                 if ja_dict_key in image and "NO.png" in image:
 
                     image = "{name}_0_{datetime}.png".format(
-                        name = ja_dict_key, datetime = getDatetime()
+                        name = ja_dict_key, datetime = get_current_yyyymmdd()
                         )
 
                     newfilenameList.append(image)
@@ -81,7 +81,7 @@ def changeName(images):
     return  beforenameList, newnameList
 
 # It can get a the execution's time
-def getDatetime():
+def get_current_yyyymmdd():
 
     today = datetime.date.today()
     yyyymmdd = today.strftime('%Y%m%d')
