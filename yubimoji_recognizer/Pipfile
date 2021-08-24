@@ -12,6 +12,7 @@ mediapipe = "*"
 #tensorflow = "*"
 #keras = "*"
 
+
 [dev-packages]
 
 [requires]
