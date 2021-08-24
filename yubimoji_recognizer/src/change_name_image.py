@@ -154,8 +154,8 @@ def addId():
         addIdfileList = []
         for file in todayfileList:
             filename = os.path.basename(file)
-            idxfound = filename.find('_0_')
-            addIdfile = filename[:idxfound+3] + str(fromthispoint) + '_' + current
+            idxfound = filename.find('_')
+            addIdfile = filename[:idxfound+1] + str(fromthispoint) + '_0_' + current
             addIdfileList.append(addIdfile)
             fromthispoint += 1
 
