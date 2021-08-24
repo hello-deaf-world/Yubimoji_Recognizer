@@ -1,5 +1,6 @@
 #-----------------------------------------------------
 # ここで杉村流の，このPythonファイルのカレントディレクトリの取得方法
+
 import inspect
 import os
 import sys
@@ -8,11 +9,18 @@ PYPATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())
 import time
 import cv2
 import mediapipe as mp
+import datetime
+
+# test module#######################
+from testcsv import outputcsv
+#######################
+
 # from image import IMAGE_FILES
 from image import get_images
+from hands_output_csv import get_id_data, get_id_label, get_Handedness, get_landmark , get_label_en, get_label_ja,get_current_dir
+from function_get_current import get_current_yyyy_mm_dd
 # from input_csv_file import inputDate
 # from ja_dict import ja_dict
-from function import getRorL
 mp_drawing = mp.solutions.drawing_utils
 mp_hands = mp.solutions.hands
 
@@ -35,13 +43,6 @@ with mp_hands.Hands(
 		# Convert the BGR image to RGB before processing.
 		results = hands.process(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
 
-		# code of the under is thing which execute function.py
-		# gotId = getId()
-		# gotToday = getToday()
-		# gotFilename
-		# gotRorL = getRorL(results.multi_handedness)
-		# got
-
 		# Print handedness and draw hand landmarks on the image.
 		# ハンドネスのプリント
 		# print('Handedness:', results.multi_handedness)
@@ -52,10 +53,35 @@ with mp_hands.Hands(
 
 
 		for hand_landmarks in results.multi_hand_landmarks:
-
+    			
+			
+			testList = []
 			#　以下実行->ランドマークの数値がプリントされる
-			print(getRorL(results.multi_handedness))
 			print('filename:',file)
+			id_data_csv = get_id_data()
+			create_data = get_current_yyyy_mm_dd()
+			id_label = get_id_label(file)
+			label_en = get_label_en(file)
+			filedir = get_current_dir(file)
+			label_ja = get_label_ja(label_en)
+			index, score, label = get_Handedness(results.multi_handedness)
+			landmark_data, landmark_List = get_landmark(results.multi_hand_landmarks)
+			
+			testList.append(create_data)
+			testList.append(id_label)
+			testList.append(label_en)
+			testList.append(label_ja)
+			testList.append(filedir)
+			testList.append(index)
+			testList.append(score)
+			testList.append(label)
+			testList.append(landmark_data)
+
+			print(testList)
+			
+			
+
+			# outputcsv(id, create_data, id_in_label, label_ja, label_en, file_dir, label, index, score)
 			# print('Handedness:', results.multi_handedness)
 			# print('hand_landmarks:', hand_landmarks)
 			# print(
