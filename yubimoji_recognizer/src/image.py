@@ -36,7 +36,7 @@ def get_images(ROOT_PATH):
             
 
 # 動作確認用
-print(get_images(PYPATH))
+# print(get_images(PYPATH))
 
 
 
