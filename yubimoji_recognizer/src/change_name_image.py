@@ -1,8 +1,10 @@
 from ja_dict import ja_dict
-from function_get_current import get_current_yyyymmdd
+from color import Color
 import os
 import glob
 import shutil
+import datetime
+
 
 # To store new images need to rename to name of Hiragana and "NO.png"
 
@@ -10,24 +12,15 @@ import shutil
 def main():
 
     imagesList = getImages()
-    beforeList, afterList = changeName(imagesList)
+    afterList = changeName(imagesList)
 
-    if len(beforeList) == len(afterList):
-        print("beforeList :" + str(beforeList))
-        print("afterList :" + str(afterList))
 
-        for before , after in zip(beforeList, afterList):
-            os.rename(before, after)
-            # print("changed name : "+ str(os.path))
+    if filemove(afterList):
+        print("successed to move the file to each folders")
 
-    else:
-        print(beforeList)
-        print(afterList)
-        print(
-            "Error: It is different the number of files in beforeList and afterList."
-            )
+    addId()
 
-    filemove(afterList)
+    
 
 
 # it can get the image all in the images file
@@ -55,11 +48,8 @@ def changeName(images):
 
             beforenameList.append(filename)
 
-    print(filenameList)
-    print(pathnameList)
-    print(beforenameList)
     if len(filenameList) != len(pathnameList):
-        return print("Error: It is different the number of files in filenameList and pathnameList.")
+        return print(Color.RED + "Error: It is different the number of files in filenameList and pathnameList." + Color.END)
 
     else:
         # it change New name to aftername from beforename
@@ -80,8 +70,36 @@ def changeName(images):
         newnameList.append(newname)
 
 
-    return  beforenameList, newnameList
+    # return  beforenameList, newnameList
 
+    if len(beforenameList) == len(newnameList):
+        print(Color.PURPLE + "beforeList :" + str(beforenameList)+ Color.END)
+        print(Color.RED + "afterList :" + str(newnameList)+ Color.END)
+
+        afterList = []
+        for before , after in zip(beforenameList, newnameList):
+            
+            if not os.path.exists(after):
+                os.rename(before, after)
+                afterList.append(after)
+
+            else:
+                copycount = 0
+                while True:
+                    afterfind = after.find('.png')
+                    after = after[:afterfind] + '_' + str(copycount)+ '_' + after[afterfind:]
+                    if not os.path.exists(after):
+                        os.rename(before, after)
+                        afterList.append(after)
+                        break
+                    else:
+                        copycount += 1
+
+        print(Color.GREEN +'Successed to change the images name'+ Color.END)
+        return afterList
+
+
+            # print("changed name : "+ str(os.path))
 # it can move the image data to each label's folders
 def filemove(filepathList):
 
@@ -101,9 +119,70 @@ def filemove(filepathList):
             else:
                 count += 1
 
+
+def addId():
+    
+    ja_count = 0
+
+    for ja in ja_dict.values():
+        dir = 'images//{idx}_{ja}'.format(idx=ja_count,ja=ja)
+        os.path.exists("{dir}//*.png".format(dir=dir))
+        images = glob.glob("{dir}//*.png".format(dir=dir))
+        if 0 == len(images):
+            continue
+        else:
+            numberOfImage = len(images)
+        # print(images)
         
+        todayfileList = []
+        for file in images:
+            current = get_current_yyyymmdd()
+            filename = '{ja}_0_{current}'.format(ja=ja, current= current)
+            # print(filename)
+            if filename in file:
+                
+                todayfileList.append(file)
+
+        if not todayfileList:
+            continue
+    
+        numberOfTodayfile = len(todayfileList)
+
+        # print(todayfileList)
+
+        fromthispoint = abs(numberOfImage - numberOfTodayfile)
+        addIdfileList = []
+        for file in todayfileList:
+            filename = os.path.basename(file)
+            idxfound = filename.find('_0_')
+            addIdfile = filename[:idxfound+3] + str(fromthispoint) + '_' + current
+            addIdfileList.append(addIdfile)
+            fromthispoint += 1
+
+        # print(Color.GREEN + str(addIdfileList) + Color.END)
+        for before, after in zip(todayfileList,addIdfileList):
+            afterpath = "images//{idx}_{ja}//{after}.png".format(idx=ja_count,ja=ja,after=after)
+
+            if afterpath:
+                os.rename(before, afterpath)
+                print(Color.PURPLE + before + Color.END,"->",Color.GREEN + afterpath + Color.END)
+            else:
+                return print(Color.RED + "can't add the Id -> ",str(before) +Color.END)
+        
+        ja_count += 1
+
+    print(Color.GREEN + "successed to add the Id to each files in each folders" + Color.END)
 
 
+def get_current_yyyymmdd():
+    
+    today = datetime.date.today()
+    yyyymmdd = today.strftime('%Y%m%d')
+
+    return yyyymmdd
+
+
+# addId()
 
 main()
 
