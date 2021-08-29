@@ -48,5 +48,6 @@ selective_convert_img(
         }
     ],
     path_img = ROOTPATH + "/images/test/gettyimages-1194679097.jpg",
+    # path_result = ROOTPATH + "/images/test/hoge.jpg",
     display_progress_imgs = True
 )
