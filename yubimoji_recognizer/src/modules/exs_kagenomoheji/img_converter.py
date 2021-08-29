@@ -19,30 +19,34 @@ def selective_convert_img(
     path_result = None,
     display_progress_imgs = False):
     '''
+    選択的かつ順序的にCV2による画像変換を実行できる関数．
+    変換元はpath_imgの画像ファイルのパスでもnp_imgの読み込んでnumpy配列にした変数でも良い．
+    変換後は基本numpy配列を返し，path_resultを指定すれば画像ファイル出力する．
+
     - Args
         - converters:[{"method":ImgConvertMethod, "params":dict}]:
-            - ImgConvertMethod.SCALE
+            - ImgConvertMethod.SCALE: 縦横比固定での拡縮
                 - ratio:float:
-            - ImgConvertMethod.RESIZE
+            - ImgConvertMethod.RESIZE: 幅・高さを指定してのリサイズ
                 - width:int:
                 - height:int:
-            - ImgConvertMethod.CVTCOLOR
+            - ImgConvertMethod.CVTCOLOR: 色空間の変換
                 - mode:CV2CvtColorMode:
-            - ImgConvertMethod.BLUR_AVG
+            - ImgConvertMethod.BLUR_AVG: 平均フィルタによる平滑化
                 - width:int: 
                 - height:int: 
-            - ImgConvertMethod.BLUR_MED
+            - ImgConvertMethod.BLUR_MED: 中央値フィルタによる平滑化
                 - size:int: 奇数
-            - ImgConvertMethod.BLUR_GAUSSIAN
+            - ImgConvertMethod.BLUR_GAUSSIAN: ガウシアンフィルタによる平滑化
                 - width:int: 奇数
                 - height:int: 奇数
                 - sigma_x:int: 0の場合，自動計算らしい
-            - ImgConvertMethod.BLUR_BILATERAL
+            - ImgConvertMethod.BLUR_BILATERAL: バイラテラルフィルタによる平滑化
                 - size:int:
                 - sigma_color:int: 
                 - sigma_space:int:
-            - ImgConvertMethod.INVERT
-            - ImgConvertMethod.THRESHOLD
+            - ImgConvertMethod.INVERT: 反転
+            - ImgConvertMethod.THRESHOLD: 2値化
                 - mode:CV2ThresholdMode:
                 - threshold:int: 2値化の閾値
             - ImgConvertMethod.BGR_SAT_BRT: BGR色空間を入力とした彩度・明度補正
@@ -50,11 +54,11 @@ def selective_convert_img(
                 - ratio_brt:float: 明度の比率
             - ImgConvertMethod.BGR_GAMMA_GRAY: ret_uint8=Falseの場合に低輝度を潰さないグレースケールをしてくれる感
                 - ret_uint8:bool: np.uint8で返すか
-            - ImgConvertMethod.CVTGAMMA
+            - ImgConvertMethod.CVTGAMMA: ガンマ補正
                 - mode:CV2CvtGammaMode:
                 - gamma:float:
-            - ImgConvertMethod.DECOLOR
-            - ImgConvertMethod.MOSAIC
+            - ImgConvertMethod.DECOLOR: 退色処理
+            - ImgConvertMethod.MOSAIC: モザイク
                 - ratio:float: モザイクの粒度．1未満．0に近いほど粒度が大きくなる．
         - path_img:str: 画像ファイルのパス
         - np_img:np.array: np.arrayとして読み込み済みの画像データ
