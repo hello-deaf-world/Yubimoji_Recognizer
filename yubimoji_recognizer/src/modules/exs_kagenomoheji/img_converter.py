@@ -25,7 +25,7 @@ def selective_convert_img(
 
     - Args
         - converters:[{"method":ImgConvertMethod, "params":dict}]:
-            - ImgConvertMethod.SCALE: 縦横比固定での拡縮
+            - ImgConvertMethod.RESCALE: 縦横比固定での拡縮
                 - ratio:float:
             - ImgConvertMethod.RESIZE: 幅・高さを指定してのリサイズ
                 - width:int:
@@ -81,10 +81,10 @@ def selective_convert_img(
         raise ValueError("Empty in variable 'frame'.")
 
     base_frame = deepcopy(frame)
-    for conv_i, converter in enumerate(converters):
+    for cvt_i, converter in enumerate(converters):
         # print(frame.shape)
         # print(frame)
-        if converter["method"] == ImgConvertMethod.SCALE:
+        if converter["method"] == ImgConvertMethod.RESCALE:
             '''
             縦横比固定で拡縮．
             '''
@@ -218,7 +218,7 @@ def selective_convert_img(
             ax2 = fig.add_subplot(1, 2, 2)
             ax2.imshow(frame, vmin = 0, vmax = 255, cmap = "gray")
             ax2.set_title("{curr}/{all}: After {method}".format(
-                curr = conv_i + 1,
+                curr = cvt_i + 1,
                 all = len(converters),
                 method = converter["method"].name
             ))
@@ -231,7 +231,7 @@ def selective_convert_img(
 
 
 class ImgConvertMethod(Enum):
-    SCALE = "scale"
+    RESCALE = "rescale"
     RESIZE = "resize"
     CVTCOLOR = "cvtColor"
     BLUR_AVG = "blur_average"
