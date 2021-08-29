@@ -42,7 +42,7 @@ selective_convert_img(
         {
             "method": ImgConvertMethod.CVTGAMMA,
             "params": {
-                "mode": CV2CvtGammaMode.SOLARIZE,
+                "mode": CV2CvtGammaMode.POSTARIZE,
                 "gamma": 7
             }
         }
