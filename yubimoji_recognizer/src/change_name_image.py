@@ -26,8 +26,10 @@ def main():
 # it can get the image all in the images file
 def getImages():
 
-    imagesList = glob.glob("images//new_images//*.png" )
+    imagesList = glob.glob("new_images//*//*.png" )
+    # print(imagesList)
     return imagesList
+    
 
 # it can change image's name to "a_(number)_(0= didn't recognize, 1= did recognize)_datatime.png"
 def changeName(images):
@@ -38,33 +40,44 @@ def changeName(images):
     pathnameList = []
     beforenameList = []
     for filename in images:
-        if "NO.png" in filename :
-            pickedfilename = os.path.basename(filename)
-            filenameList.append(pickedfilename)
+        pickedfilename = os.path.basename(filename)
+        filenameList.append(pickedfilename)
 
-            #it add "pathname" to "pathnameList"
-            pathname = filename.replace(pickedfilename, '')
-            pathnameList.append(pathname)
+        #it add "pathname" to "pathnameList"
+        pathname = filename.replace(pickedfilename, '')
+        pathnameList.append(pathname)
+        beforenameList.append(filename)
 
-            beforenameList.append(filename)
+    # print(pathnameList)
+    # print(beforenameList)
+    # print(filenameList)
 
     if len(filenameList) != len(pathnameList):
         return print(Color.RED + "Error: It is different the number of files in filenameList and pathnameList." + Color.END)
 
     else:
+        print(filenameList)
+        print(pathnameList)
         # it change New name to aftername from beforename
         newfilenameList = []
-        for image in filenameList:
-            for ja_dict_key in ja_dict.values():
-                if ja_dict_key in image and "NO.png" in image:
-
+        count = 0 
+        for ja_dict_key in ja_dict.values():
+            for path,image in zip(pathnameList,filenameList):
+                if '{count}_{name}'.format(count = count ,name = ja_dict_key) in path:
                     image = "{name}_0_{datetime}.png".format(
                         name = ja_dict_key, datetime = get_current_yyyymmdd()
                         )
 
                     newfilenameList.append(image)
+            count += 1
+
+                    
+    
+    print(newfilenameList)
 
     newnameList = []
+    # print(pathnameList)
+    # print(newfilenameList)
     for i in range(len(newfilenameList)):
         newname = pathnameList[i] + newfilenameList[i]
         newnameList.append(newname)
@@ -113,7 +126,7 @@ def filemove(filepathList):
         count = 0
         for en in ja_dict.values():
             if filename[:file_idx] == en:
-                movepath =  "images//{count}_{en}//".format(count=count, en=en) 
+                movepath =  "renamed_images//{count}_{en}//".format(count=count, en=en) 
                 shutil.move(filepath,movepath)
                 print('move before:' ,filepath ," ", "move after", movepath)
             else:
@@ -125,7 +138,7 @@ def addId():
     ja_count = 0
 
     for ja in ja_dict.values():
-        dir = 'images//{idx}_{ja}'.format(idx=ja_count,ja=ja)
+        dir = 'renamed_images//{idx}_{ja}'.format(idx=ja_count,ja=ja)
         os.path.exists("{dir}//*.png".format(dir=dir))
         images = glob.glob("{dir}//*.png".format(dir=dir))
         if 0 == len(images):
@@ -161,7 +174,7 @@ def addId():
 
         # print(Color.GREEN + str(addIdfileList) + Color.END)
         for before, after in zip(todayfileList,addIdfileList):
-            afterpath = "images//{idx}_{ja}//{after}.png".format(idx=ja_count,ja=ja,after=after)
+            afterpath = "renamed_images//{idx}_{ja}//{after}.png".format(idx=ja_count,ja=ja,after=after)
 
             if afterpath:
                 os.rename(before, afterpath)
@@ -182,7 +195,6 @@ def get_current_yyyymmdd():
     return yyyymmdd
 
 
-# addId()
 
 main()
 
