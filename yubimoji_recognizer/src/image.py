@@ -31,7 +31,7 @@ def get_images(ROOT_PATH):
 
     #上記ディレクトリにある画像ファイル群のファイル名リストを取得(拡張子.png)
     
-    images = glob.glob(ROOT_PATH + "images//*//*.png")
+    images = glob.glob(ROOT_PATH + "renamed_images//*//*.png")
     return images
             
 
