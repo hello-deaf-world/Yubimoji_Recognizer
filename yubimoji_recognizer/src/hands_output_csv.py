@@ -67,28 +67,28 @@ def get_Handedness(data):
 
 		for handData in data:
 			for handlabel in handData.classification:
-				index = handlabel.index
+				# index = handlabel.index
 				score = handlabel.score
 				label = handlabel.label
 
-		return index, score, label
+		return score, label
 
 
 def get_landmark(data):
 
 	handDataList = []
-	landmark_data = ''
+	# landmark_data = ''
 	for landmarks in data:
 		for landmark in landmarks.landmark:
 			x = landmark.x
 			y = landmark.y
 			z = landmark.z
-			landmark_data += ',{x},{y},{z}'.format(x = x, y = y, z = z)
+			# landmark_data += ',{x},{y},{z}'.format(x = x, y = y, z = z)
 			handDataList.append(x)
 			handDataList.append(y)
 			handDataList.append(z)
 
-	return landmark_data, handDataList
+	return handDataList
 
 
 
