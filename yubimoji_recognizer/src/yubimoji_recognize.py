@@ -17,7 +17,7 @@ from testcsv import outputcsv
 
 # from image import IMAGE_FILES
 from image import get_images
-from hands_output_csv import get_id_data, get_id_label, get_Handedness, get_landmark , get_label_en, get_label_ja,get_current_dir
+from hands_output_csv import  get_id_label, get_Handedness, get_landmark , get_label_en, get_label_ja,get_current_dir
 from function_get_current import get_current_yyyy_mm_dd
 # from input_csv_file import inputDate
 # from ja_dict import ja_dict
@@ -58,30 +58,29 @@ with mp_hands.Hands(
 			testList = []
 			#　以下実行->ランドマークの数値がプリントされる
 			print('filename:',file)
-			id_data_csv = get_id_data()
-			create_data = get_current_yyyy_mm_dd()
+			
+			create_date = get_current_yyyy_mm_dd()
 			id_label = get_id_label(file)
 			label_en = get_label_en(file)
 			filedir = get_current_dir(file)
 			label_ja = get_label_ja(label_en)
-			index, score, label = get_Handedness(results.multi_handedness)
-			landmark_data, landmark_List = get_landmark(results.multi_hand_landmarks)
+			left_or_right_score, left_or_right_label = get_Handedness(results.multi_handedness)
+			landmarks_List = get_landmark(results.multi_hand_landmarks)
 			
-			testList.append(create_data)
+			testList.append(create_date)
 			testList.append(id_label)
 			testList.append(label_en)
 			testList.append(label_ja)
 			testList.append(filedir)
-			testList.append(index)
-			testList.append(score)
-			testList.append(label)
-			testList.append(landmark_data)
+			testList.append(left_or_right_label)
+			testList.append(left_or_right_score)
+			testList.append(landmarks_List)
 
 			print(testList)
 			
 			
 
-			# outputcsv(id, create_data, id_in_label, label_ja, label_en, file_dir, label, index, score)
+			# outputcsv(id, create_date, id_in_label, label_ja, label_en, file_dir, left_or_right_label, left_or_right_score, landmarks_List)
 			# print('Handedness:', results.multi_handedness)
 			# print('hand_landmarks:', hand_landmarks)
 			# print(
