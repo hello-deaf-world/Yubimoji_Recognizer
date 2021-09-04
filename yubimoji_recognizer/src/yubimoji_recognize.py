@@ -17,7 +17,7 @@ from testcsv import outputcsv
 
 # from image import IMAGE_FILES
 from image import get_images
-from hands_output_csv import  get_id_data, get_id_label, get_Handedness, get_landmark , get_label_en, get_label_ja,get_current_dir
+from hands_output_csv import  recognized_image_change_name,get_id_data, get_id_label, get_Handedness, get_landmark , get_label_en, get_label_ja,get_current_dir
 from function_get_current import get_current_yyyy_mm_dd
 # from input_csv_file import inputDate
 # from ja_dict import ja_dict
@@ -58,12 +58,14 @@ with mp_hands.Hands(
 			testList = []
 			#　以下実行->ランドマークの数値がプリントされる
 			print('filename:',file)
+
+			refile = recognized_image_change_name(file)
 			
 			get_id = get_id_data()
 			create_date = get_current_yyyy_mm_dd()
-			id_label = get_id_label(file)
-			label_en = get_label_en(file)
-			filedir = get_current_dir(file)
+			id_label = get_id_label(refile)
+			label_en = get_label_en(refile)
+			filedir = get_current_dir(refile)
 			label_ja = get_label_ja(label_en)
 			left_or_right_score, left_or_right_label = get_Handedness(results.multi_handedness)
 			landmarks_List = get_landmark(results.multi_hand_landmarks)
