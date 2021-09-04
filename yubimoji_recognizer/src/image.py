@@ -31,8 +31,35 @@ def get_images(ROOT_PATH):
 
     #上記ディレクトリにある画像ファイル群のファイル名リストを取得(拡張子.png)
     
-    images = glob.glob(ROOT_PATH + "renamed_images//*//*.png")
-    return images
+    # True = picking only '0' | False = all of the images
+    if True:
+        images = glob.glob(ROOT_PATH + "renamed_images//*//*.png")
+
+        new_images = []
+        for image in images:
+            if "_0_" in image:
+                new_images.append(image)
+        count = 0
+        
+        pick_images = []
+        for image in new_images:
+            count = 0
+            keynum = 0
+            pickimage = os.path.basename(image)
+            for idx, char in enumerate(pickimage):
+                if char == '_':
+                    count += 1
+                    if count == 2:
+                        keynum = idx + 1
+                        if pickimage[keynum] == '0':
+                            pick_images.append(image)
+    
+    else:
+        pick_images = glob.glob(ROOT_PATH + "renamed_images//*//*.png")
+                    
+
+
+    return pick_images
             
 
 # 動作確認用
