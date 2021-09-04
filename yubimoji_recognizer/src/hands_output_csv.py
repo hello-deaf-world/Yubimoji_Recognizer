@@ -1,10 +1,44 @@
 import os
 import datetime
 from ja_dict import ja_dict
+from function_get_current import get_current_yyyymmdd
 
 
 # # This code is the function for yubimoji_recognize.py
 
+
+def recognized_image_change_name(image):
+    
+	pickfilename = os.path.basename(image)
+	dirname = os.path.dirname(image)
+
+	count  = 0
+	for idx,i in enumerate(pickfilename):
+		if i == '_':
+			count += 1
+			if count == 2:
+				changeidx = idx + 1
+	
+	if pickfilename[changeidx] == "0":
+		s = list(pickfilename)
+		s[changeidx] = '1'
+		pickfilename = ''.join(s)
+	
+	findidx = pickfilename.find('.png')
+	today = get_current_yyyymmdd()
+	pickfilename = pickfilename[:findidx - 8] + today + pickfilename[findidx:]
+    	
+	new_image = dirname + "/" + pickfilename
+
+	if os.path.exists(image):
+		os.rename(image, new_image)
+
+	return new_image
+
+print(recognized_image_change_name("/renamed_images/0_a/a_0_0_20210904.png"))
+
+
+    	
 # # it can to get the id
 def get_id_data():
 
@@ -21,6 +55,7 @@ def get_current_yyyy_mm_dd():
     yyyymmdd = today.strftime('%Y-%m-%d')
 
     return yyyymmdd
+
 
 def get_id_label(file):
 
