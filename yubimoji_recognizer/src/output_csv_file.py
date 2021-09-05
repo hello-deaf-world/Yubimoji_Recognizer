@@ -64,7 +64,7 @@ def setup_header(csvname,f) :
             #1番上の行を取得
         #取得した0行目のデータのheaderとheader名が違う場合は書き直す（pandas）
             if:
-                #header_nameと同じ場合は
+                #header_nameと同じ場合
                 pass
             else:
                 #同じではない→1行だけ書き直す処理（pandas）
