@@ -2,12 +2,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import cv2
-from modules.exs_kagenomoheji.img_converter import (
+from modules.ext.kagenomoheji.img_converter import (
     selective_convert_img,
     ImgConvertMethod,
     CV2CvtColorMode
 )
-from modules.exs_kagenomoheji.distance import (
+from modules.ext.kagenomoheji.distance import (
     get_dist_cos
 )
 

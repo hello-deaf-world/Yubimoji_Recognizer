@@ -5,7 +5,7 @@ PYPATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())
 ROOTPATH = PYPATH + "./../.."
 sys.path.append(ROOTPATH)
 
-from modules.exs_kagenomoheji.img_converter import (
+from modules.ext.kagenomoheji.img_converter import (
     selective_convert_img,
     ImgConvertMethod,
     CV2CvtColorMode,
