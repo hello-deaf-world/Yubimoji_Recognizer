@@ -183,8 +183,8 @@ def checkNumberOfImage(ja_count,ja):
     with open(file, "r",encoding="utf-8") as f:
         data = f.read()
     
-    if "画像の保存最大枚数: " in data:
-        findData = data.find("画像の保存最大枚数: ") + 11
+    if "次回の画像id番号: " in data:
+        findData = data.find("次回の画像id番号: ") + 11
         maxNumber = int(data[findData:])
 
     else:
@@ -200,7 +200,7 @@ def writeMaxNumberOfImage(maxNumberOfImage,ja_count,ja):
     file = "renamed_images//{idx}_{ja}//{ja}_memo.txt".format(idx=ja_count,ja=ja)
     with open(file, "r",encoding="utf-8") as f:
         data = f.read()
-        findData = data.find("画像の保存最大枚数: ") + 11
+        findData = data.find("次回の画像id番号: ") + 11
         maxNumber = data[:findData] + str(maxNumberOfImage)
         
     with open(file,"w",encoding="utf-8")as f:
