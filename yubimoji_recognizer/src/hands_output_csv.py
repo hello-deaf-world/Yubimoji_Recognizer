@@ -110,7 +110,8 @@ def get_Handedness(data):
 
 def get_landmark(data):
 
-	handDataList = []
+	
+	landmarkDataList = []
 	# landmark_data = ''
 	for landmarks in data:
 		for landmark in landmarks.landmark:
@@ -118,11 +119,13 @@ def get_landmark(data):
 			y = landmark.y
 			z = landmark.z
 			# landmark_data += ',{x},{y},{z}'.format(x = x, y = y, z = z)
+			handDataList = []
 			handDataList.append(x)
 			handDataList.append(y)
 			handDataList.append(z)
+			landmarkDataList.append(handDataList)
 
-	return handDataList
+	return landmarkDataList
 
 
 
