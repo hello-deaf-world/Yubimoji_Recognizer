@@ -16,9 +16,12 @@ def make_dir_renamed_images():
         count += 1
 
         path = renamed_images_path + '\\' + name + '_memo.txt'
-        with open(path,'w', encoding = 'utf-8') as f:
-            f.write('変更した'+ name + 'ラベルの画像データを格納しています。')
-            
+        if os.path.exists(path):
+            pass
+        else:
+            f = open(path,'w', encoding = 'utf-8')
+            f.write('変更した'+ name + 'ラベルの画像データを格納しています。\n画像の保存最大枚数: 0')
+            f.close()
 
 def make_dir_new_images():
 
