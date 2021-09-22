@@ -141,36 +141,24 @@ def addId():
         dir = 'renamed_images//{idx}_{ja}'.format(idx=ja_count,ja=ja)
         os.path.exists("{dir}//*.png".format(dir=dir))
         images = glob.glob("{dir}//*.png".format(dir=dir))
-        if 0 == len(images):
-            continue
-        else:
-            numberOfImage = len(images)
-        # print(images)
         
         todayfileList = []
         for file in images:
             current = get_current_yyyymmdd()
             filename = '{ja}_0_{current}'.format(ja=ja, current= current)
-            # print(filename)
+            
             if filename in file:
-                
                 todayfileList.append(file)
-
-        if not todayfileList:
-            continue
-    
-        numberOfTodayfile = len(todayfileList)
-
-        # print(todayfileList)
-
-        fromthispoint = abs(numberOfImage - numberOfTodayfile)
+            
+        currNumberOfImage = checkNumberOfImage(ja_count,ja)
+        
         addIdfileList = []
         for file in todayfileList:
             filename = os.path.basename(file)
             idxfound = filename.find('_')
-            addIdfile = filename[:idxfound+1] + str(fromthispoint) + '_0_' + current
+            addIdfile = filename[:idxfound+1] + str(currNumberOfImage) + '_0_' + current
             addIdfileList.append(addIdfile)
-            fromthispoint += 1
+            currNumberOfImage += 1
 
         # print(Color.GREEN + str(addIdfileList) + Color.END)
         for before, after in zip(todayfileList,addIdfileList):
@@ -178,7 +166,10 @@ def addId():
 
             if afterpath:
                 os.rename(before, afterpath)
+                writeMaxNumberOfImage(currNumberOfImage,ja_count,ja)
+                
                 print(Color.PURPLE + before + Color.END,"->",Color.GREEN + afterpath + Color.END)
+            
             else:
                 return print(Color.RED + "can't add the Id -> ",str(before) +Color.END)
         
@@ -186,7 +177,36 @@ def addId():
 
     print(Color.GREEN + "successed to add the Id to each files in each folders" + Color.END)
 
+# it can check number of next id.
+def checkNumberOfImage(ja_count,ja):
+    file = "renamed_images//{idx}_{ja}//{ja}_memo.txt".format(idx=ja_count,ja=ja)
+    with open(file, "r",encoding="utf-8") as f:
+        data = f.read()
+    
+    if "画像の保存最大枚数: " in data:
+        findData = data.find("画像の保存最大枚数: ") + 11
+        maxNumber = int(data[findData:])
 
+    else:
+        return print(Color.RED +file+" <-- it can't find the text data." + Color.END)       
+
+    if maxNumber == 0:
+        return 0
+    else:
+        return maxNumber
+
+# it can write number of next id fixed
+def writeMaxNumberOfImage(maxNumberOfImage,ja_count,ja):
+    file = "renamed_images//{idx}_{ja}//{ja}_memo.txt".format(idx=ja_count,ja=ja)
+    with open(file, "r",encoding="utf-8") as f:
+        data = f.read()
+        findData = data.find("画像の保存最大枚数: ") + 11
+        maxNumber = data[:findData] + str(maxNumberOfImage)
+        
+    with open(file,"w",encoding="utf-8")as f:
+        f.write(maxNumber)
+
+# it can get current_YYYYMMDD
 def get_current_yyyymmdd():
     
     today = datetime.date.today()
