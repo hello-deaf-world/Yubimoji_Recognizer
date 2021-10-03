@@ -1,7 +1,10 @@
 from ja_dict import ja_dict
+from color import Color
 import os
 import glob
+import shutil
 import datetime
+
 
 # To store new images need to rename to name of Hiragana and "NO.png"
 
@@ -9,30 +12,24 @@ import datetime
 def main():
 
     imagesList = getImages()
-    beforeList, afterList = changeName(imagesList)
-
-    if len(beforeList) == len(afterList):
-        print("beforeList :" + str(beforeList))
-        print("afterList :" + str(afterList))
-
-        for before , after in zip(beforeList, afterList):
-            os.rename(before, after)
-            # print("changed name : "+ str(os.path))
+    afterList = changeName(imagesList)
 
 
-    else:
-        print(beforeList)
-        print(afterList)
-        print(
-            "Error: It is different the number of files in beforeList and afterList."
-            )
+    if filemove(afterList):
+        print("successed to move the file to each folders")
+
+    addId()
+
+    
 
 
 # it can get the image all in the images file
 def getImages():
 
-    imagesList = glob.glob("images//*//*.png" )
+    imagesList = glob.glob("new_images//*//*.png" )
+    # print(imagesList)
     return imagesList
+    
 
 # it can change image's name to "a_(number)_(0= didn't recognize, 1= did recognize)_datatime.png"
 def changeName(images):
@@ -43,55 +40,183 @@ def changeName(images):
     pathnameList = []
     beforenameList = []
     for filename in images:
-        if "NO.png" in filename :
-            pickedfilename = os.path.basename(filename)
-            filenameList.append(pickedfilename)
+        pickedfilename = os.path.basename(filename)
+        filenameList.append(pickedfilename)
 
-            #it add "pathname" to "pathnameList"
-            pathname = filename.replace(pickedfilename, '')
-            pathnameList.append(pathname)
+        #it add "pathname" to "pathnameList"
+        pathname = filename.replace(pickedfilename, '')
+        pathnameList.append(pathname)
+        beforenameList.append(filename)
 
-            beforenameList.append(filename)
+    # print(pathnameList)
+    # print(beforenameList)
+    # print(filenameList)
 
-    print(filenameList)
-    print(pathnameList)
-    print(beforenameList)
     if len(filenameList) != len(pathnameList):
-        return print("Error: It is different the number of files in filenameList and pathnameList.")
+        return print(Color.RED + "Error: It is different the number of files in filenameList and pathnameList." + Color.END)
 
     else:
+        print(filenameList)
+        print(pathnameList)
         # it change New name to aftername from beforename
         newfilenameList = []
-        for image in filenameList:
-            for ja_dict_key in ja_dict.values():
-                if ja_dict_key in image and "NO.png" in image:
-
+        count = 0 
+        for ja_dict_key in ja_dict.values():
+            for path,image in zip(pathnameList,filenameList):
+                if '{count}_{name}'.format(count = count ,name = ja_dict_key) in path:
                     image = "{name}_0_{datetime}.png".format(
-                        name = ja_dict_key, datetime = getDatetime()
+                        name = ja_dict_key, datetime = get_current_yyyymmdd()
                         )
 
                     newfilenameList.append(image)
+            count += 1
+
+                    
+    
+    print(newfilenameList)
 
     newnameList = []
+    # print(pathnameList)
+    # print(newfilenameList)
     for i in range(len(newfilenameList)):
         newname = pathnameList[i] + newfilenameList[i]
         newnameList.append(newname)
 
 
-    return  beforenameList, newnameList
+    # return  beforenameList, newnameList
 
-# It can get a the execution's time
-def getDatetime():
+    if len(beforenameList) == len(newnameList):
+        print(Color.PURPLE + "beforeList :" + str(beforenameList)+ Color.END)
+        print(Color.RED + "afterList :" + str(newnameList)+ Color.END)
 
-    dt_now = datetime.datetime.now()
-    getToday = "{year}{month}{day}".format(
-        year = dt_now.year, month = dt_now.month, day = dt_now.day,
-        hour = dt_now.hour, minute = dt_now.minute, second = dt_now.second)
-    return getToday
+        afterList = []
+        for before , after in zip(beforenameList, newnameList):
+            
+            if not os.path.exists(after):
+                os.rename(before, after)
+                afterList.append(after)
+
+            else:
+                copycount = 0
+                while True:
+                    afterfind = after.find('.png')
+                    after = after[:afterfind] + '_' + str(copycount)+ '_' + after[afterfind:]
+                    if not os.path.exists(after):
+                        os.rename(before, after)
+                        afterList.append(after)
+                        break
+                    else:
+                        copycount += 1
+
+        print(Color.GREEN +'Successed to change the images name'+ Color.END)
+        return afterList
+
+
+            # print("changed name : "+ str(os.path))
+# it can move the image data to each label's folders
+def filemove(filepathList):
+
+
+    
+
+    for filepath in filepathList:
+        filename = os.path.basename(filepath)
+        file_idx = filename.find("_")
+
+        count = 0
+        for en in ja_dict.values():
+            if filename[:file_idx] == en:
+                movepath =  "renamed_images//{count}_{en}//".format(count=count, en=en) 
+                shutil.move(filepath,movepath)
+                print('move before:' ,filepath ," ", "move after", movepath)
+            else:
+                count += 1
+
+
+def addId():
+    
+    ja_count = 0
+
+    for ja in ja_dict.values():
+        dir = 'renamed_images//{idx}_{ja}'.format(idx=ja_count,ja=ja)
+        os.path.exists("{dir}//*.png".format(dir=dir))
+        images = glob.glob("{dir}//*.png".format(dir=dir))
+        
+        todayfileList = []
+        for file in images:
+            current = get_current_yyyymmdd()
+            filename = '{ja}_0_{current}'.format(ja=ja, current= current)
+            
+            if filename in file:
+                todayfileList.append(file)
+            
+        currNumberOfImage = checkNumberOfImage(ja_count,ja)
+        
+        addIdfileList = []
+        for file in todayfileList:
+            filename = os.path.basename(file)
+            idxfound = filename.find('_')
+            addIdfile = filename[:idxfound+1] + str(currNumberOfImage) + '_0_' + current
+            addIdfileList.append(addIdfile)
+            currNumberOfImage += 1
+
+        # print(Color.GREEN + str(addIdfileList) + Color.END)
+        for before, after in zip(todayfileList,addIdfileList):
+            afterpath = "renamed_images//{idx}_{ja}//{after}.png".format(idx=ja_count,ja=ja,after=after)
+
+            if afterpath:
+                os.rename(before, afterpath)
+                writeMaxNumberOfImage(currNumberOfImage,ja_count,ja)
+                
+                print(Color.PURPLE + before + Color.END,"->",Color.GREEN + afterpath + Color.END)
+            
+            else:
+                return print(Color.RED + "can't add the Id -> ",str(before) +Color.END)
+        
+        ja_count += 1
+
+    print(Color.GREEN + "successed to add the Id to each files in each folders" + Color.END)
+
+# it can check number of next id.
+def checkNumberOfImage(ja_count,ja):
+    file = "renamed_images//{idx}_{ja}//{ja}_memo.txt".format(idx=ja_count,ja=ja)
+    with open(file, "r",encoding="utf-8") as f:
+        data = f.read()
+    
+    if "次回の画像id番号: " in data:
+        findData = data.find("次回の画像id番号: ") + 11
+        maxNumber = int(data[findData:])
+
+    else:
+        return print(Color.RED +file+" <-- it can't find the text data." + Color.END)       
+
+    if maxNumber == 0:
+        return 0
+    else:
+        return maxNumber
+
+# it can write number of next id fixed
+def writeMaxNumberOfImage(maxNumberOfImage,ja_count,ja):
+    file = "renamed_images//{idx}_{ja}//{ja}_memo.txt".format(idx=ja_count,ja=ja)
+    with open(file, "r",encoding="utf-8") as f:
+        data = f.read()
+        findData = data.find("次回の画像id番号: ") + 11
+        maxNumber = data[:findData] + str(maxNumberOfImage)
+        
+    with open(file,"w",encoding="utf-8")as f:
+        f.write(maxNumber)
+
+# it can get current_YYYYMMDD
+def get_current_yyyymmdd():
+    
+    today = datetime.date.today()
+    yyyymmdd = today.strftime('%Y%m%d')
+
+    return yyyymmdd
 
 
 
 main()
 
 
-
+     

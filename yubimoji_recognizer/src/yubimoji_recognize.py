@@ -1,5 +1,6 @@
 #-----------------------------------------------------
 # ここで杉村流の，このPythonファイルのカレントディレクトリの取得方法
+
 import inspect
 import os
 import sys
@@ -8,11 +9,20 @@ PYPATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())
 import time
 import cv2
 import mediapipe as mp
+import datetime
+
+# test module#######################
+from testcsv import outputcsv
+#######################
+
 # from image import IMAGE_FILES
-from image import get_images
+from get_images import get_images
+from hands_output_csv import  recognized_image_change_name,get_id_data, get_id_label, get_Handedness, get_landmark , get_label_en, get_label_ja,get_current_dir
+from function_get_current import get_current_yyyy_mm_dd
+from data_recognize_hand import DataRecognizeHand
+# from output_csv.file import output_csv
 # from input_csv_file import inputDate
 # from ja_dict import ja_dict
-from function import getRorL
 mp_drawing = mp.solutions.drawing_utils
 mp_hands = mp.solutions.hands
 
@@ -26,7 +36,12 @@ with mp_hands.Hands(
 	# for i in range(len(files_name)):
 	# 	  print("files name:", files_name[i])
 
-	IMAGE_FILES = get_images(PYPATH)
+	# key = 0 ... it can get the data don't recognize 
+	# key = 1 ... it can get the data recognized
+	# key = all ... it can get all of the data
+
+	key = "0"
+	IMAGE_FILES = get_images(PYPATH, key)
 	for idx, file in enumerate(IMAGE_FILES):
 
 		# Read an image, flip it around y-axis for correct handedness output (see
@@ -34,13 +49,6 @@ with mp_hands.Hands(
 		image = cv2.flip(cv2.imread(file), 1)
 		# Convert the BGR image to RGB before processing.
 		results = hands.process(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
-
-		# code of the under is thing which execute function.py
-		# gotId = getId()
-		# gotToday = getToday()
-		# gotFilename
-		# gotRorL = getRorL(results.multi_handedness)
-		# got
 
 		# Print handedness and draw hand landmarks on the image.
 		# ハンドネスのプリント
@@ -52,10 +60,45 @@ with mp_hands.Hands(
 
 
 		for hand_landmarks in results.multi_hand_landmarks:
-
+    			
+			
+			for_id_from_score_List = []
 			#　以下実行->ランドマークの数値がプリントされる
-			print(getRorL(results.multi_handedness))
 			print('filename:',file)
+
+			refile = recognized_image_change_name(file)
+			
+			get_id = get_id_data()
+			create_date = get_current_yyyy_mm_dd()
+			id_label = get_id_label(refile)
+			label_en = get_label_en(refile)
+			filedir = get_current_dir(refile)
+			label_ja = get_label_ja(label_en)
+			left_or_right_score, left_or_right_label = get_Handedness(results.multi_handedness)
+			landmarks_List = get_landmark(results.multi_hand_landmarks)
+			
+			# for_id_from_score_List
+			for_id_from_score_List.append(get_id)
+			for_id_from_score_List.append(create_date)
+			for_id_from_score_List.append(id_label)
+			for_id_from_score_List.append(label_en)
+			for_id_from_score_List.append(label_ja)
+			for_id_from_score_List.append(filedir)
+			for_id_from_score_List.append(left_or_right_label)
+			for_id_from_score_List.append(left_or_right_score)
+			# for_id_from_score_List.append(landmarks_List)
+
+
+			print(for_id_from_score_List)
+			print(landmarks_List)
+
+			dataRecognizeHand_obj = DataRecognizeHand(get_id,create_date,id_label,label_en,label_ja,filedir,left_or_right_label,left_or_right_score,landmarks_List)
+
+			# output_csv(dataRecognizeHand_obj)
+			
+			
+
+			# outputcsv(id, create_date, id_in_label, label_ja, label_en, file_dir, left_or_right_label, left_or_right_score, landmarks_List)
 			# print('Handedness:', results.multi_handedness)
 			# print('hand_landmarks:', hand_landmarks)
 			# print(

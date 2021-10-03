@@ -6,3 +6,6 @@
 .venv/
 build/
 __pycache__/
+
+#images
+*.png
