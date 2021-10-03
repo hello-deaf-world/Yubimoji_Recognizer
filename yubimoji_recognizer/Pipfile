@@ -11,7 +11,7 @@ opencv-python = "*"
 mediapipe = "*"
 #tensorflow = "*"
 #keras = "*"
-
+tqdm = "*"
 
 [dev-packages]
 
