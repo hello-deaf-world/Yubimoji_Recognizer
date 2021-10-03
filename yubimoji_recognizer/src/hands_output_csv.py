@@ -41,11 +41,14 @@ print(recognized_image_change_name("/renamed_images/0_a/a_0_0_20210904.png"))
     	
 # # it can to get the id
 def get_id_data():
+	
+	csvname = 'hand_landmark_data.csv'
 
-	csvname = 'test.csv'
-	with open(csvname) as f:
+	if os.path.isfile(csvname) == False:
+		return "1"
+	with open(csvname,"r",encoding="utf-8") as f:
 		lines = len(f.readlines())
-		return lines + 1
+		return lines
 
 
 # yyyy-mm-dd
