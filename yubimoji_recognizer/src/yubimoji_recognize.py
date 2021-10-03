@@ -16,7 +16,7 @@ from testcsv import outputcsv
 #######################
 
 # from image import IMAGE_FILES
-from image import get_images
+from get_images import get_images
 from hands_output_csv import  recognized_image_change_name,get_id_data, get_id_label, get_Handedness, get_landmark , get_label_en, get_label_ja,get_current_dir
 from function_get_current import get_current_yyyy_mm_dd
 from data_recognize_hand import DataRecognizeHand
