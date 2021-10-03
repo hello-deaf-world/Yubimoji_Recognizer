@@ -20,6 +20,7 @@ from get_images import get_images
 from hands_output_csv import  recognized_image_change_name,get_id_data, get_id_label, get_Handedness, get_landmark , get_label_en, get_label_ja,get_current_dir
 from function_get_current import get_current_yyyy_mm_dd
 from data_recognize_hand import DataRecognizeHand
+from output_csv_file import output_csv
 # from output_csv.file import output_csv
 # from input_csv_file import inputDate
 # from ja_dict import ja_dict
@@ -33,7 +34,7 @@ with mp_hands.Hands(
 		max_num_hands=2,
 		min_detection_confidence=0.5) as hands:
 
-	# for i in range(len(files_name)):
+	# for i in range(len(files_name)):from
 	# 	  print("files name:", files_name[i])
 
 	# key = 0 ... it can get the data don't recognize 
@@ -94,7 +95,7 @@ with mp_hands.Hands(
 
 			dataRecognizeHand_obj = DataRecognizeHand(get_id,create_date,id_label,label_en,label_ja,filedir,left_or_right_label,left_or_right_score,landmarks_List)
 
-			# output_csv(dataRecognizeHand_obj)
+			output_csv(dataRecognizeHand_obj)
 			
 			
 
