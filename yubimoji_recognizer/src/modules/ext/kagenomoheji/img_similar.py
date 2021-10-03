@@ -36,6 +36,11 @@ from modules.ext.kagenomoheji.distance import (
         - 「どの色がどれだけ発生しているか」をヒストグラムとして見ている？
         - 色が発生している場所は考慮されてなさそう
     - 関数compare_color_histgramsを実装したのでそれを使用して．
+- 特徴点マッチング
+    - 画像等のデータにおいて共通する連続した特徴を検出してマッチングする
+    - ORB(Oriented FAST and Rotated BRIEF)やAKAZEといったアルゴリズムがある
+        - ORB
+            - https://ichi.pro/orb-no-gaiyo-oriented-fast-and-rotated-brief-72709114183887
 
 
 # find_similar_imgfiles関数について実装予定
@@ -48,6 +53,12 @@ from modules.ext.kagenomoheji.distance import (
     - 偏差値を求める
         - https://qiita.com/kenmatsu4/items/e6c6acb289c02609e619#6%E4%BE%8B2%E5%81%8F%E5%B7%AE%E5%80%A4
 '''
+
+def 
+
+
+
+
 
 def compare_color_histgrams(
     path_base_img = None,
@@ -66,6 +77,7 @@ def compare_color_histgrams(
         - path_comp_img:str: 
         - np_comp_img:np.array: 
         - resize:(width:int, height:int): 
+        - display_histgrams:bool: 
     - Returns
         - カラーヒストグラムによる類似度
     -Refs
