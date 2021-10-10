@@ -1,7 +1,9 @@
 import csv 
 import os
-import pandas as pd
+# import pandas as pd
 
+
+from next_id import get_next_id
 #csv data 
 #forid_fromscore_List = id, create_date, id_in_label, label_ja, label_en, file_dir, left_or_right_label, left_or_right_score
 #Pass data as two list types
@@ -22,25 +24,43 @@ import pandas as pd
 
 def output_csv(data_recognize_hand):
 
-    prefolder = '作りたいフォルダまでのパス//作りたいフォルダ名'
+    # prefolder = '作りたいフォルダまでのパス//作りたいフォルダ名'
     # newfolder = prefolder
     csvname = "hand_landmark_data.csv"
+    # (杉村)os.path.existsが真偽値返すから「== 真偽値」は無くて良い
+    # (杉村)ここのifは「ファイルが無かったら」だけでOK．
+    # ファイルがない時，何をしたいのか？　＝＞　ヘッダを作る
+    # ならば，ヘッダの有無での条件分岐を次のwith句の中で作れば良い
+    if not os.path.exists(csvname) :
+        #ファイルがない場合
+        key = True
+    else:
+        #ファイルがある場合
+        key = False
 
-    with open(csvname, "a", encoding = "utf-8", newline = "") as f :
+    
+
+    with open(csvname, "a", encoding = "utf-8", newline="") as f :
         writer = csv.writer(f) 
 
         #csvファイルがあれば、認識したデータを書きだす処理だけ
         #無かったら、ヘッダーを書き出し、その後に認識データを書き出す
-        if os.path.exists(csvname) == True:
-            # os.makedirs(newfolder + '//1', exsist_ok = True)
-            # # shutil.copy2('コピーしたいファイルまでのパス',newfolder + 'コピーするファイルの名前')
-            pass
         
-        else:
+        if key == True:  #ファイルがない場合
             writer.writerow(create_header_name())
-            
-        writer.writerow(recognize_data_output(data_recognize_hand))
+    
+        writer.writerow(recognize_data_output(data_recognize_hand))   
+        
+        
+        # print(os.path.exists(csvname))
+        
+        # # if not os.path.exists(writer) == True:
 
+        # #     writer.writerow(create_header_name())
+        # # else:
+        # #     pass
+        
+       
 
 # self.id = id
 # self.create_date = create_date
@@ -59,8 +79,11 @@ def output_csv(data_recognize_hand):
 def recognize_data_output(data_recognize_hand):
     
     dr = data_recognize_hand
+    dr.id = get_next_id()
     # recognize_data_list = "{},{},{},{},{},{},{},{}".format(dr.id,dr.create_date,dr.id_label,dr.label_en,dr.label_ja,dr.filedir,dr.left_or_right_label,dr.left_or_right_score)
     recognize_data_list = [dr.id,dr.create_date,dr.id_label,dr.label_en,dr.label_ja,dr.filedir,dr.left_or_right_label,dr.left_or_right_score]
+
+    
 
     #ランドマークのデータを整理
     # landmarks_data = ""
