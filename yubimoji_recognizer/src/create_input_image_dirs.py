@@ -17,9 +17,7 @@ def make_dir_renamed_images():
 
         path = renamed_images_path + '\\' + name + '_memo.txt'
         
-        if os.path.exists(path):
-            pass
-        else:
+        if not os.path.exists(path):
             f = open(path,'w', encoding = 'utf-8')
             f.write('変更した'+ name + 'ラベルの画像データを格納しています。\n次回の画像id番号: 0')
             f.close()
