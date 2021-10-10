@@ -2,10 +2,17 @@
 
 class DataRecognizeHand:
 
-    def __init__(self,id,create_date,id_label,label_en,label_ja,filedir,left_or_right_label,left_or_right_score,landmarks_list):
+    def __init__(
+        self,
+        create_date,
+        id_label,label_en,
+        label_ja,filedir,
+        left_or_right_label,
+        left_or_right_score,
+        landmarks_list
+        ):
 
         
-        self.id = id
         self.create_date = create_date
         self.id_label = id_label
         self.label_en = label_en
