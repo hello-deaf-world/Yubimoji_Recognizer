@@ -17,10 +17,11 @@ from testcsv import outputcsv
 
 # from image import IMAGE_FILES
 from get_images import get_images
-from hands_output_csv import  recognized_image_change_name,get_id_data, get_id_label, get_Handedness, get_landmark , get_label_en, get_label_ja,get_current_dir
+from hands_output_csv import  recognized_image_change_name, get_id_label, get_Handedness, get_landmark , get_label_en, get_label_ja,get_current_dir
 from function_get_current import get_current_yyyy_mm_dd
 from data_recognize_hand import DataRecognizeHand
 from output_csv_file import output_csv
+from tqdm import tqdm
 # from output_csv.file import output_csv
 # from input_csv_file import inputDate
 # from ja_dict import ja_dict
@@ -41,9 +42,9 @@ with mp_hands.Hands(
 	# key = 1 ... it can get the data recognized
 	# key = all ... it can get all of the data
 
-	key = "0"
+	key = "ALL"
 	IMAGE_FILES = get_images(PYPATH, key)
-	for idx, file in enumerate(IMAGE_FILES):
+	for idx, file in tqdm(enumerate(IMAGE_FILES)):
 
 		# Read an image, flip it around y-axis for correct handedness output (see
 		# above).
@@ -65,11 +66,11 @@ with mp_hands.Hands(
 			
 			for_id_from_score_List = []
 			#　以下実行->ランドマークの数値がプリントされる
-			print('filename:',file)
+			# print('filename:',file)
 
 			refile = recognized_image_change_name(file)
 			
-			get_id = get_id_data()
+			
 			create_date = get_current_yyyy_mm_dd()
 			id_label = get_id_label(refile)
 			label_en = get_label_en(refile)
@@ -78,8 +79,6 @@ with mp_hands.Hands(
 			left_or_right_score, left_or_right_label = get_Handedness(results.multi_handedness)
 			landmarks_List = get_landmark(results.multi_hand_landmarks)
 			
-			# for_id_from_score_List
-			for_id_from_score_List.append(get_id)
 			for_id_from_score_List.append(create_date)
 			for_id_from_score_List.append(id_label)
 			for_id_from_score_List.append(label_en)
@@ -90,10 +89,19 @@ with mp_hands.Hands(
 			# for_id_from_score_List.append(landmarks_List)
 
 
-			print(for_id_from_score_List)
-			print(landmarks_List)
+			# print(for_id_from_score_List)
+			# print(landmarks_List)
 
-			dataRecognizeHand_obj = DataRecognizeHand(get_id,create_date,id_label,label_en,label_ja,filedir,left_or_right_label,left_or_right_score,landmarks_List)
+			dataRecognizeHand_obj = DataRecognizeHand(
+				create_date,
+				id_label,
+				label_en,
+				label_ja,
+				filedir,
+				left_or_right_label,
+				left_or_right_score,
+				landmarks_List
+				)
 
 			output_csv(dataRecognizeHand_obj)
 			
