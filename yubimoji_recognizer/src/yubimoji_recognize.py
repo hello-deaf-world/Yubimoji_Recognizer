@@ -21,7 +21,7 @@ from hands_output_csv import  recognized_image_change_name, get_id_label, get_Ha
 from function_get_current import get_current_yyyy_mm_dd
 from data_recognize_hand import DataRecognizeHand
 from output_csv_file import output_csv
-from tqdm import tqdm
+from tqdm.auto import tqdm
 # from output_csv.file import output_csv
 # from input_csv_file import inputDate
 # from ja_dict import ja_dict
@@ -44,11 +44,11 @@ with mp_hands.Hands(
 
 	key = "ALL"
 	IMAGE_FILES = get_images(PYPATH, key)
-	for idx, file in tqdm(enumerate(IMAGE_FILES)):
+	for i in tqdm(range(len(IMAGE_FILES)),desc="loading"):
 
 		# Read an image, flip it around y-axis for correct handedness output (see
 		# above).
-		image = cv2.flip(cv2.imread(file), 1)
+		image = cv2.flip(cv2.imread(IMAGE_FILES[i]), 1)
 		# Convert the BGR image to RGB before processing.
 		results = hands.process(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
 
@@ -68,7 +68,7 @@ with mp_hands.Hands(
 			#　以下実行->ランドマークの数値がプリントされる
 			# print('filename:',file)
 
-			refile = recognized_image_change_name(file)
+			refile = recognized_image_change_name(IMAGE_FILES[i])
 			
 			
 			create_date = get_current_yyyy_mm_dd()
