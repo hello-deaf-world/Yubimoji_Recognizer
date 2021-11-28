@@ -38,16 +38,6 @@ def recognized_image_change_name(image):
 print(recognized_image_change_name("/renamed_images/0_a/a_0_0_20210904.png"))
 
 
-    	
-# # it can to get the id
-def get_id_data():
-
-	csvname = 'test.csv'
-	with open(csvname) as f:
-		lines = len(f.readlines())
-		return lines + 1
-
-
 # yyyy-mm-dd
 def get_current_yyyy_mm_dd():
 
