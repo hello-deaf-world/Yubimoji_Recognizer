@@ -9,8 +9,11 @@ numpy = "*"
 matplotlib = "*"
 opencv-python = "*"
 mediapipe = "*"
-tensorflow = "*"
-keras = "*"
+#tensorflow = "*"
+#keras = "*"
+google-api-python-client = "*"
+google-auth-httplib2 = "*"
+google-auth-oauthlib = "*"
 
 [dev-packages]
 
