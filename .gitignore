@@ -5,7 +5,3 @@
 
 .venv/
 build/
-__pycache__/
-
-*.png
-**/credentials/
