@@ -1,7 +1,16 @@
 .DS_Store
 .history/
 .vscode/
+bk/
+**/logs/**/*.log
 
+# Docker
+data/
 
+# Python
 .venv/
 build/
+__pycache__/
+secrets/
+secrets*.py
+*secrets.py
